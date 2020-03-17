@@ -1,0 +1,31 @@
+---
+# - name: check param VAR_Apache_gathering_rolename subElement
+  # stat:
+    # path: "{{ playbook_dir }}/roles/{{ outer_item }}"
+  # delegate_to: localhost
+  # become: no
+  # register: file_exist
+
+# - name: fail when file not exist
+  # fail:
+    # msg: "There is no {{ outer_item }} in the {{ playbook_dir }}/roles directory."
+  # when: file_exist.stat.exists == false
+
+- name: check param VAR_Apache_gathering_dest
+  fail:
+    msg: "Parameter VAR_Apache_gathering_dest cannot be NULL."
+  when: (VAR_Apache_gathering_dest is none) or (VAR_Apache_gathering_dest == '')
+
+- name: import roles
+  import_role:
+    name: '{{ playbook_dir }}/roles/gathering'
+  vars:
+    VAR_gathering_definition_role_path: "{{ playbook_dir }}/roles/Apache24_gathering_linux"
+    VAR_gathering_label: "Apache24_gathering_linux"
+
+- name: Copy data
+  copy:
+    src: "{{ gathered_data_dest }}/"
+    dest: "{{ VAR_Apache_gathering_dest }}/{{ inventory_hostname }}/Apache24_gathering_linux"
+  delegate_to: localhost
+  become: no

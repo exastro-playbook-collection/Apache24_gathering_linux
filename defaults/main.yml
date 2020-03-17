@@ -1,0 +1,2 @@
+---
+VAR_Apache_gathering_dest: "{{ playbook_dir }}/_gathered_data"

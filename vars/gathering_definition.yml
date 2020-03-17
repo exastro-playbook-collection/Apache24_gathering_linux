@@ -1,0 +1,5 @@
+---
+file: # ファイル収集
+  - /etc/httpd/conf/httpd.conf
+command:
+  - systemctl is-enabled httpd.service
